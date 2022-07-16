@@ -1,23 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import Data from "./CarouselData"
+import BtnSlider from "./BtnSlider"
+import {useState} from "react"
 
 function App() {
+  const [slideIndex,setSlideIndex] = useState(1);
+
+  const prevSlide = (()=>{
+    if(slideIndex!== 1)
+    setSlideIndex(slideIndex-1)
+    else
+    setSlideIndex(Data.length)
+  })
+  const nextSlide = (()=>{
+    if(slideIndex!== Data.length)
+    setSlideIndex(slideIndex+1)
+    else
+    setSlideIndex(1)
+  })
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="mx-auto w-9/12 container-slider">
+      {
+        Data.map((object,index)=>{
+          return (           
+            <div key={object.id} className={slideIndex === index+1 ? "slide active": "slide"}>
+              <img className="mx-auto carousel-item" src={object.url} alt={`Wallpaper-${object.id}`} />
+            </div>
+            )
+        })
+      }
+      <BtnSlider direction={"next"} moveSlide={nextSlide}/>
+      <BtnSlider direction={"prev"} moveSlide={prevSlide}/>
+
     </div>
   );
 }
